@@ -1,14 +1,14 @@
-// Recursive Java program to reverse
-// a linked list
+// Java program for reversing the linked list
 
-import java.io.*;
+class LinkedList {
 
-class recursion {
-	static Node head; // head of list
+	static Node head;
 
 	static class Node {
+
 		int data;
 		Node next;
+
 		Node(int d)
 		{
 			data = d;
@@ -16,59 +16,59 @@ class recursion {
 		}
 	}
 
-	static Node reverse(Node head)
+	Node itterativereverse(Node node)
 	{
-		if (head == null || head.next == null)
-			return head;
-
-		/* reverse the rest list and put
-		the first element at the end */
-		Node rest = reverse(head.next);
-		head.next.next = head;
-
-		/* tricky step -- see the diagram */
-		head.next = null;
-
-		/* fix the head pointer */
-		return rest;
+	    Node prev=null;
+	    Node current=node;
+	    Node ahead=null;
+	    while(current!=null){
+	        ahead=current.next;
+	        current.next=prev;
+	        prev=current;
+	        current=ahead;
+	    }
+		return prev;
+	}
+	
+	Node recursivereverse(Node head)
+	{
+	    //basecases
+	    if(head==null||head.next==null){
+	        return head;
+	    }
+	    
+	    Node rhead=recursivereverse(head.next);
+	    head.next.next=head; 
+	    head.next=null;
+	    return rhead;
+		
 	}
 
-	/* Function to print linked list */
-	static void print()
+	void printList(Node node)
 	{
-		Node temp = head;
-		while (temp != null) {
-			System.out.print(temp.data + " ");
-			temp = temp.next;
+		while (node != null) {
+			System.out.print(node.data + " ");
+			node = node.next;
 		}
-		System.out.println();
 	}
 
-	static void push(int data)
+	
+	public static void main(String[] args)
 	{
-		Node temp = new Node(data);
-		temp.next = head;
-		head = temp;
-	}
+		LinkedList list = new LinkedList();
+		list.head = new Node(5);
+		list.head.next = new Node(10);
+		list.head.next.next = new Node(15);
+		list.head.next.next.next = new Node(20);
 
-	/* Driver program to test above function*/
-	public static void main(String args[])
-	{
-		/* Start with the empty list */
-
-		push(20);
-		push(4);
-		push(15);
-		push(85);
-
-		System.out.println("Given linked list");
-		print();
-
-		head = reverse(head);
-
-		System.out.println("Reversed linked list");
-		print();
+		list.printList(head);
+		head = list.recursivereverse(head);
+		System.out.println("");
+		System.out.println("Reversed linked list ");
+		list.printList(head);
+		head = list.itterativereverse(head);
+		System.out.println("");
+		System.out.println("Reversed Reversed linked list ");
+		list.printList(head);
 	}
 }
-
-// This code is contributed by Prakhar Agarwal
